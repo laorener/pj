@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>破茧科技-cms登陆</title>
+    <meta name="csrf_token" value="{{csrf_token()}}">
+    <script src="{{url_for('static',filename='jquery-1.11.1.min.js')}}"></script>
+    <script src="{{url_for('static',filename='bootstrap.min.js')}}"></script>
+    <link href="{{url_for('static',filename='bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{url_for('static',filename='cms/css/login.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{url_for('static',filename='common/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
+    <script src="{{url_for('static',filename='common/sweetalert/sweetalert.min.js')}}"></script>
+    <script src="{{url_for('static',filename='common/sweetalert/xtalert.js')}}"></script>
+    <script src="{{url_for('static',filename='cms/js/login.js')}}"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="card card-container">
+            <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+            <p id="profile-name" class="profile-name-card"></p>
+            <form class="form-signin">
+                <span id="reauth-email" class="reauth-email"></span>
+                <input type="email" id="inputEmail" class="form-control" placeholder="请输入你的邮箱" required autofocus>
+                <input type="password" id="inputPassword" class="form-control" placeholder="请输入你的密码" required>
+                <div id="remember" class="checkbox">
+                    <label>
+                        <input type="checkbox" value="0"> 记住我
+                    </label>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" id ="loginBtn">登陆</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
