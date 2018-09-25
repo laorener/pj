@@ -15,6 +15,14 @@ Migrate(app,db)
 # 把MigrateCommand(数据库迁移)命令添加到manager
 manage.add_command("db",MigrateCommand)
 
+@manage.option('-e','--email',dest='email')
+@manage.option('-u','--username',dest='username')
+@manage.option('-p','--password',dest='password')
+def addcmsuser(email,username,password):
+    user = User(email=email,username=username,password=password)
+    db.session.add(user)
+    db.session.commit()
+
 
 if __name__ == '__main__':
     manage.run()

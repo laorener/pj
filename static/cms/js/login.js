@@ -85,6 +85,8 @@ $(function () {
         email = $('#inputEmail').val()
         pwd = $('#inputPassword').val();
         csrf = $('meta[name=csrf_token]').attr("value")
+        remberMeInput = $('input[name=remberme]');
+        remberme = remberMeInput.prop("checked");
         ev.preventDefault()
         $.ajax({
             url:'/cms/login/',
@@ -92,7 +94,8 @@ $(function () {
             data:{
                 'email':email,
                 'password':pwd,
-                'csrf_token':csrf
+                'csrf_token':csrf,
+                'remberme':remberme?1:0
             },
             success:function (data) {
                 if(data.code == 200){

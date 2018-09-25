@@ -28,3 +28,23 @@ SQLALCHEMY_ECHO=True #如果设置成 True，SQLAlchemy 将会记录所有发到
 
 #session
 SECRET_KEY = 'abc'
+REMBERME = 'remberme'
+LOGIN = 'login'
+CURRENT_USER_ID='user_id'
+CURRENT_USER = "current_user"
+
+# flask-mail
+MAIL_SERVER = 'smtp.qq.com'
+MAIL_PROT = 587
+MAIL_USE_TLS = True
+MAIL_USE_SSL = False
+MAIL_USERNAME = "995304793@qq.com"
+MAIL_PASSWORD = "aklwmontjyqubcjd"  # 不是登录
+MAIL_DEFAULT_SENDER='995304793@qq.com' # 默认的发件人
+
+#MAIL_USE_TLS 端口号 587
+#MAIL_USE_SSL 端口号 467
+# QQ邮箱不支持非加密方式发送邮件
+
+
+

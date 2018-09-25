@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>后台首页</title>
-</head>
-<body>
-    后台首页
-</body>
-</html>
+{% extends 'cms/base.html' %}
+
+{% block title  %}
+    破茧CMS管理系统
+{% endblock %}
+{% block page_title  %}
+    欢迎来到 {{ super.title}}
+{% endblock %}
+{% block content %}
+    欢迎来到 {{ super.title}}
+{% endblock %}
