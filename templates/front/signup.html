@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>破茧科技论坛注册</title>
+    <meta name="csrf_token" value="{{csrf_token()}}">
+    <meta name="from" value="{{location}}">
+    <script src="{{ url_for('static',filename='jquery-1.11.1.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='bootstrap.min.js') }}"></script>
+    <link href="{{ url_for('static',filename='bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    <script src="{{ url_for('static',filename='common/sweetalert/xtalert.js') }}"></script>
+    <script src="{{ url_for('static',filename='common/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{url_for('static',filename='front/js/signup.js')}}"></script>
+    <script src="{{url_for('static',filename='front/js/security.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='common/sweetalert/sweetalert.css') }}">
+    <style>
+        body {
+            background: #f3f3f3;
+        }
+        .outer-box {
+            width: 854px;
+            background: #fff;
+            margin:  100px auto;
+            overflow: hidden;
+            padding-top: 70px;
+        }
+        .logo_box {
+            text-align: center;
+        }
+        .logo img {
+            width: 70px;
+            height: 70px;
+        }
+        .page_title {
+            text-align: center;
+        }
+        .wd {
+            width: 300px;
+            margin: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="outer-box">
+        <div class="logo_box">
+            <a href="#" class="logo"><img src="{{url_for('static',filename='front/img/pjkj.png')}}" alt=""></a>
+        </div>
+        <h2 class="page_title">破茧账号登陆</h2>
+        <div class="form_box">
+            <form class="">
+                 <div class="form-group wd">
+                     <div class="input-group">
+                         <input type="text" name="telephone" class="form-control"  placeholder="手机号码">
+                         <span class="input-group-btn"><button class="btn btn-primary" id="send_sms_code_btn"> 发送验证码 </button></span>
+                     </div>
+                </div>
+                 <div class="form-group wd">
+                     <input type="text" name="smscode" class="form-control"  placeholder="短信验证码">
+                 </div>
+                 <div class="form-group wd">
+                     <input type="text" name="username" class="form-control"  placeholder="用户名">
+                 </div>
+                 <div class="form-group wd">
+                     <input type="password" name="password" class="form-control"  placeholder="密码">
+                 </div>
+                 <div class="form-group wd">
+                     <input type="password" name="password1" class="form-control"  placeholder="确认密码">
+                 </div>
+                 <div class="form-group wd">
+                     <div class="input-group">
+                         <input type="text" name="captchacode" class="form-control"  placeholder="图形验证码">
+                         <span class="input-group-btn" style="border: 1px solid #333">
+                             <img class="captcha" data-src="/img_code/" src="/img_code/" alt="验证码">
+                         </span>
+                     </div>
+                </div>
+                <div class="form-group wd" style="margin-bottom: 100px">
+                    <button id="signup_btn" class="btn btn-warning wd">立即注册</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

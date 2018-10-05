@@ -7,3 +7,6 @@ def saveCache(key,value,time=0) :
 
 def getCache(key):
     return mc.get(key)
+
+def delete(key):
+    mc.delete(key)

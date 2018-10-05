@@ -43,6 +43,7 @@
           <div class="col-sm-3 col-md-2 sidebar">
               <ul class="nav-sidebar">
                 <li class="unfold"><a href="#">首页</a></li>
+                  {% if user.checkpermission(1) %}
                 <li class="profile-li">
                     <a href="#">个人中心<span></span></a>
                     <ul class="subnav">
@@ -51,14 +52,29 @@
                         <li><a href="/cms/resetemail/">修改邮箱</a></li>
                     </ul>
                 </li>
-                    <li class="nav-group post-manage"><a href="#">轮播图管理</a></li>
+                    {% endif %}
+                {% if user.checkpermission(2) %}
+                    <li class="nav-group post-manage"><a href="/cms/banner/">轮播图管理</a></li>
+              {% endif %}
+                {% if user.checkpermission(4) %}
                     <li class="nav-group post-manage"><a href="#">帖子管理</a></li>
+              {% endif %}
+                {% if user.checkpermission(8) %}
                     <li class="comments-manage"><a href="#">评论管理</a></li>
+              {% endif %}
+                {% if user.checkpermission(16) %}
                     <li class="board-manage"><a href="#">板块管理</a></li>
+              {% endif %}
+                {% if user.checkpermission(32) %}
                     <li class="nav-group user-manage"><a href="#">用户管理</a></li>
+              {% endif %}
+                {% if user.checkpermission(64) %}
                      <li class="nav-group cmsuser-manage"><a href="#">CMS用户管理</a></li>
+              {% endif %}
+                {% if user.checkpermission(128) %}
                      <li class="cmsrole-manage"><a href="#">CMS组管理</a></li>
             </ul>
+                {% endif %}
           </div>
           <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1>{% block page_title %} {% endblock %}</h1>

@@ -10,20 +10,20 @@
 {% endblock %}
 
 {% block page_title  %}
-    欢迎来到 {{ super.title}} -修改密码
+    欢迎来到 {{ super.title}} -修改邮箱
 {% endblock %}
 
 {% block content %}
     <form>
-  <div class="form-group" style="width: 300px">
-    <label class="sr-only" for="email">邮箱</label>
-    <input type="text" class="form-control" id="email" placeholder="请输入你的新邮箱">
-      <button type="submit" class="btn btn-default" id="sendEmailCode">发送邮箱验证码</button>
-  </div>
-  <div class="form-group" style="width: 300px">
-    <label class="sr-only" for="emailcode">验证码</label>
-    <input type="text" class="form-control" id="emailcode" placeholder="邮箱的验证码">
-  </div>
-  <button type="submit" class="btn btn-default" id="resetpwdbtn">重置密码</button>
-</form>
+      <div class="form-group" style="width: 300px">
+        <label class="sr-only" for="email">邮箱</label>
+        <input type="text" class="form-control" id="email" placeholder="请输入你的新邮箱">
+          <button type="submit" class="btn btn-default" id="sendEmailCode">发送邮箱验证码</button>
+      </div>
+      <div class="form-group" style="width: 300px">
+        <label class="sr-only" for="emailcode">验证码</label>
+        <input type="text" class="form-control" id="emailcode" placeholder="邮箱的验证码">
+      </div>
+      <button type="submit" class="btn btn-default" id="resetpwdbtn">重置密码</button>
+    </form>
 {% endblock %}
