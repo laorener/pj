@@ -1,48 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-     <meta name="csrf_token" value="{{csrf_token()}}">
-    <script src="{{ url_for('static',filename='jquery-1.11.1.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='bootstrap.min.js') }}"></script>
-    <link href="{{ url_for('static',filename='bootstrap.min.css') }}" rel="stylesheet" type="text/css">
-    <script src="{{ url_for('static',filename='common/sweetalert/xtalert.js') }}"></script>
-    <script src="{{ url_for('static',filename='common/sweetalert/sweetalert.min.js') }}"></script>
-    <script src="{{url_for('static',filename='front/js/signin.js')}}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='common/sweetalert/sweetalert.css') }}">
-</head>
-<body>
-    <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">破茧科技论坛</a>
-    </div>
+{% extends 'front/base.html' %}
+{% block title %} 首页{% endblock %}
+{% block header %}
+    <style>
+.post-group {
+    margin-top: 20px;
+    border: 2px solid #e6e6e6;
+    border-radius: 5px;
+    width: 65%;
+    margin-left: 150px;
+}
+.post-header ul  {
+    list-style: none;
+    overflow: hidden;
+}
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
-      </ul>
-      <form class="navbar-form navbar-left">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+.post-header-li {
+    text-align: center;
+    width: 24%;
+    float: left;
+    font-size: 17px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.post-li {
+    list-style: none;
+}
+ </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-1">
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    {% for banner in banners %}
+                        {% if loop.first %}
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                        {% else %}
+                            <li data-target="#carousel-example-generic" data-slide-to="{{ loop.index }}"></li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    {% for banner in banners %}
+                        {% if loop.first %}
+                            <div class="item active">
+                                <img alt="Third slide [900x500]"
+                                     src="{{ banner.imglink }}"
+                                     data-holder-rendered="true">
+                            </div>
+                        {% else %}
+                            <div class="item">
+                                <img alt="Third slide [900x500]"
+                                     src="{{ banner.imglink }}"
+                                     data-holder-rendered="true">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-default">提交</button>
-      </form>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="/signin/">登录</a></li>
-          <li><a href="/signup/">注册</a></li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-</body>
-</html>
+        <div class="col-md-2 " style="">
+            <button class="btn-block btn btn-lg btn-success "><a href="/addpost/">发布帖子</a></button>
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background: lightblue;text-align:center">
+                    <h3 class="panel-title">模块名称</h3>
+                </div>
+                {% for board in boards %}
+                    <div class="panel-body" style="text-align: center">
+                        <a href="#">{{ board.boardname }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="post-group">
+        <div class="post-header" style="border-bottom: 1px solid #e6e6e6">
+            <ul>
+                <li class="post-header-li"><a href="#">最新</a></li>
+                <li class="post-header-li"><a href="#">精华帖子</a></li>
+                <li class="post-header-li"><a href="#">点赞最多</a></li>
+                <li class="post-header-li"><a href="#">评论最多</a></li>
+            </ul>
+        </div>
+        <div class="post-content">
+            <ul>
+                {% for post in posts %}
+                    <li class="post-li"
+                        style="border-bottom: 1px solid #e6e6e6;overflow: hidden;padding-top: 20px;padding-bottom: 10px">
+                        <div style="float:left;">
+                            <img style="width: 40px;height: 40px"
+                                 src="{{ url_for('static',filename='front/img/pjkj.png') }}">
+                        </div>
+                        <div style="float:left;padding-left: 20px">
+                            <div style="font-size: 18px;font-weight: 700">{{ post.title }}</div>
+                            <div><span style="padding-right: 20px">作者:{{ post.user.username}}</span>
+                                <span style="padding-right: 20px;padding-left: 20px">评论:10</span>
+                                <span style="padding-right: 20px;padding-left: 20px">时间:{{ post.create_time|convert}}</span>
+                                <span style="padding-right: 20px;padding-left: 20px">阅读:10</span>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

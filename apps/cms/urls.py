@@ -3,10 +3,11 @@ from flask import Blueprint
 from flask.views import  MethodView
 from flask import render_template,session
 from apps.cms.forms import UserForm,ResetPwdForm,ResetEmailForm,\
-        ResetEmailSendCode,BannerUpdate,BannerForm
+        ResetEmailSendCode,BannerUpdate,BannerForm,addBoaderFrom,\
+        updateboardFrom,deleteboardFrom
 from flask import request,jsonify
 from apps.common.baseResp import *
-from apps.common.models import Banner
+from apps.common.models import Banner,Board
 from exts import db,mail
 from flask_mail import Message
 from apps.cms.models import *
@@ -15,6 +16,7 @@ import string
 import random
 from apps.common.memcachedUtil import saveCache,getCache
 from functools import wraps
+from qiniu import Auth
 
 bp = Blueprint('cms',__name__,url_prefix="/cms")
 
@@ -222,7 +224,64 @@ def updateBanner():
     else:
         return jsonify(respParamErr(msg=fm.err))
 
+@bp.route("/qiniu_token/")
+@loginDecotor
+@checkPermission(Permission.BANNER)
+def qiniukey():
+    # 通过secer-key id 生成一个令牌，返回给客户端
+    ak = "gixRZTC9nnM_ODSEyAmDtFPVBD5sBWJo1dsfszvB"
+    sk = "X8TYRWzELi-hfyzl1MeAkEbS9i5DKL_8qI4m_o3l"
+    q = Auth(ak, sk)
+    bucket_name = 'pjssb' # 仓库的名字
+    token = q.upload_token(bucket_name)
+    return jsonify({'uptoken': token})
 
+@bp.route("/board/")
+@loginDecotor
+@checkPermission(Permission.PLATE)
+def board():
+    board = Board.query.all()
+    context = {
+        'boards': board
+    }
+    return render_template("cms/board.html", **context)
+@bp.route("/addboard/",methods=["post"])
+@loginDecotor
+@checkPermission(Permission.PLATE)
+def addboard():
+    fm = addBoaderFrom(formdata=request.form)
+    if fm.validate():
+        board = Board(boardname=fm.boardname.data)
+        db.session.add(board)
+        db.session.commit()
+        return jsonify(respSuccess(msg='添加成功'))
+    else:
+        return jsonify(respParamErr(msg=fm.err))
+
+@bp.route("/updateboard/",methods=["post"])
+@loginDecotor
+@checkPermission(Permission.PLATE)
+def updateboard():
+    fm  = updateboardFrom(formdata=request.form)
+    if fm.validate():
+        board = Board.query.filter(Board.id == fm.id.data).first()
+        board.boardname = fm.boardname.data
+        db.session.commit()
+        return jsonify(respSuccess(msg='修改成功'))
+    else:
+        return jsonify(respParamErr(msg=fm.err))
+@bp.route("/deleteboard/",methods=["post"])
+@loginDecotor
+@checkPermission(Permission.PLATE)
+def deleteboard():
+    fm = deleteboardFrom(formdata=request.form)
+    if fm.validate():
+        board = Board.query.filter(Board.id == fm.id.data).first()
+        db.session.delete(board)
+        db.session.commit()
+        return jsonify(respSuccess(msg='删除成功'))
+    else:
+        return jsonify(respParamErr(msg=fm.err))
 
 @bp.context_processor
 def requestUser():
@@ -232,3 +291,7 @@ def requestUser():
         user = User.query.get(userid)
         return {'user':user}
     return {}
+
+@bp.route("/send_email/",methods=["get"])
+def ss():
+    return render_template("cms/login.html")

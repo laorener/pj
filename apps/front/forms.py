@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
+from wtforms import StringField,IntegerField
 from wtforms.validators import Regexp,InputRequired,Length,EqualTo
 import hashlib
 from flask import jsonify
@@ -7,7 +7,8 @@ from apps.common.baseResp import *
 from  apps.front.models import FrontUser
 from  apps.common.memcachedUtil import getCache,delete
 from wtforms.validators import ValidationError
-
+from flask import session
+from config import FRONT_USER_ID
 class BaseForm(FlaskForm):
     @property
     def err(self):
@@ -67,9 +68,38 @@ class SigninForm(BaseForm):
         user = FrontUser.query.filter(FrontUser.telephone == filed.data).first()
         if not user:
             raise ValidationError('电话未注册')
+    def validate_password(self,filed):
+        r = FrontUser.query.filter(FrontUser.telephone == self.telephone.data).first()
+        if r.checkPwd(filed.data) == False:
+            raise ValidationError('密码错误')
+        else:
+            # 存起来
+            session[FRONT_USER_ID] = r.id
 
+class SendCodeForm(BaseForm):
+    telephone = StringField(validators=[Regexp('^1[35786]\d{9}$',message='请输入正确电话号码')])
+    def validate_telephone(self,filed):
+        r = FrontUser.query.filter(FrontUser.telephone == filed.data).first()
+        if not r :
+            raise ValidationError('手机号未被注册')
 
+class FindpwdFrom(SendCodeForm):
+    password = StringField(validators=[InputRequired(message="必须输入密码"), Length(min=6, max=20, message="密码必须是6-20位")])
+    password1 = StringField(validators=[EqualTo('password', message="两次密码必须一致")])
+    smscode = StringField(validators=[InputRequired(message="必须输入手机验证码")])
+    def validate_smscode(self,filed):
+        # 从缓存中获取到，然后校验
+        smscode = getCache(self.telephone.data)
+        print("校验得到的验证码"+smscode)
+        if not smscode :
+            raise ValidationError('请输入正确的手机验证码')
+        if smscode.upper() != filed.data :
+            raise ValidationError('验证码错误')
 
+class AddPostForm(BaseForm):
+    title = StringField(InputRequired(message="帖子标题不能为空"))
+    boarder_id = IntegerField(InputRequired(message="板块不能为空"))
+    content = StringField(InputRequired(message="帖子内容不能为空"))
 
 # pjkj进行
 def md5(telephone):

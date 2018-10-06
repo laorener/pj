@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>找回密码</title>
+    <meta charset="UTF-8">
+    <meta name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+    <meta name="from" value="{{location}}">
+    <script src="{{ url_for('static',filename='jquery-1.11.1.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='bootstrap.min.js') }}"></script>
+    <link href="{{ url_for('static',filename='bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    <script src="{{ url_for('static',filename='common/sweetalert/xtalert.js') }}"></script>
+    <script src="{{ url_for('static',filename='common/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{url_for('static',filename='front/js/findpwd.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='common/sweetalert/sweetalert.css') }}">
+    <style>
+        body {
+            background: #f3f3f3;
+        }
+        .outer-box {
+            width: 854px;
+            background: #fff;
+            margin:  100px auto;
+            overflow: hidden;
+            padding-top: 70px;
+        }
+        .logo_box {
+            text-align: center;
+        }
+        .logo img {
+            width: 70px;
+            height: 70px;
+        }
+        .page_title {
+            text-align: center;
+        }
+        .wd {
+            width: 300px;
+            margin: auto;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+     <div class="outer-box">
+        <div class="logo_box">
+            <a href="#" class="logo"><img src="{{url_for('static',filename='front/img/pjkj.png')}}" alt=""></a>
+        </div>
+        <h2 class="page_title">找回密码</h2>
+        <div class="form_box">
+            <form class="">
+                 <div class="form-group wd">
+                     <div class="input-group">
+                         <input type="text" name="telephone" class="form-control" id="telephone"  placeholder="账号绑定手机号">
+                         <span class="input-group-btn"><button class="btn btn-primary" id="send_sms_code_btn"> 发送验证码 </button></span>
+                     </div>
+                </div>
+                 <div class="form-group wd">
+                     <input type="text" name="smscode" id="smscode" class="form-control"  placeholder="短信验证码">
+                 </div>
+                 <div class="form-group wd">
+                     <input type="password" name="password"  class="form-control" id="password"  placeholder="新密码">
+                 </div>
+                 <div class="form-group wd">
+                     <input type="password" name="password" class="form-control" id="password1"  placeholder="再次确认密码">
+                 </div>
+
+                <div class="form-group wd">
+                    <button id="signin_btn" class="btn btn-warning wd">重置密码</button>
+                </div>
+                <div class="form-group wd" style="margin-bottom: 50px">
+
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

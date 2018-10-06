@@ -7,8 +7,8 @@ from apps.cms.models import  User
 from flask import jsonify
 from apps.common.baseResp import  respParamErr
 from apps.common.memcachedUtil import  getCache
-from apps.common.models import Banner
-
+from apps.common.models import Banner,Board
+from apps.cms.models import Boarder
 class BaseForm(FlaskForm):
     @property    # 把函数变成了属性来调用
     def err(self):
@@ -62,3 +62,19 @@ class BannerUpdate(BannerForm):
         pass
     def validate_link(self, filed):
         pass
+#校验板块管理
+class addBoaderFrom(BaseForm):
+    boardname = StringField(validators=[InputRequired(message="不能为空")])
+    def validate_boardname(self, filed):
+        r = Board.query.filter(Board.boardname == filed.data).first()
+        if r :
+            raise ValidationError('该模块已存在，请勿重复添加 ')
+class updateboardFrom(addBoaderFrom):
+    id =IntegerField(validators=[InputRequired(message='必须输入id')])
+class deleteboardFrom(BaseForm):
+    id = IntegerField(validators=[InputRequired(message='必须输入id')])
+
+    def validate_id(self, filed):
+        r = Board.query.filter(Board.id == filed.data).first()
+        if not r :
+            raise ValidationError('该模块不存在，删除失败 ')

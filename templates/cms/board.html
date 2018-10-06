@@ -1,0 +1,83 @@
+{% extends 'cms/base.html' %}
+
+{% block title %}
+    模块管理
+{% endblock %}
+
+{% block page_title %}
+    欢迎来到{{self.title()}}
+{% endblock %}
+{% block head %}
+    <script src="{{url_for('static',filename='cms/js/board.js') }}"></script>
+    <script src="https://cdn.staticfile.org/Plupload/2.1.1/moxie.js"></script>
+    <script src="https://cdn.staticfile.org/Plupload/2.1.1/plupload.dev.js"></script>
+    <script src="https://cdn.staticfile.org/qiniu-js-sdk/1.0.14-beta/qiniu.js"></script>
+{% endblock %}
+{% block  content%}
+    <div style="overflow: hidden">
+        <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal" style="float: right">添加版块
+        </button>
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td>编号</td>
+            <td>版块名称</td>
+            <td>帖子数量</td>
+            <td>创建时间</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for board in boards %}
+            <tr>
+            <td>{{ board.id }}</td>
+            <td>{{ board.boardname }}</td>
+            <td>{{ board.postnum }}</td>
+            <td>{{ board.create_time }}</td>
+            <td>
+                <button class="btn btn-danger delete-btn" data-id="{{ board.id }}">删除</button>
+                <button class="btn btn-warning update-btn"
+                        data-bannerName="{{board.bannername }}"
+                        data-id="{{ board.id }}"
+                >更新</button>
+            </td>
+        </tr>
+            {% else %}
+                暂无数据
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <input type="hidden" value="" name="id" id="id">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">添加版块</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="bannerName" style="display: none" class="col-sm-2 control-label">id</label>
+                            <div class="col-sm-10" style="display: none">
+                                <input type="text"  class="form-control" id="id" placeholder="请输入id">
+                            </div>
+                            <label for="bannerName" class="col-sm-2 control-label">版块名称</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="boardName" placeholder="请输入版块名称">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button"  id="saveBanner" class="btn btn-primary"  from="0">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

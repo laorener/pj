@@ -9,7 +9,7 @@ TEMPLATES_AUTO_RELOAD=True
 # 数据库的配置项
 # 数据库连接
 DB_USERNAME='root'
-DB_PASSWORD="123456"
+DB_PASSWORD="root"
 DB_HOST="127.0.0.1"
 DB_PORT="3306"
 DB_NAME="bbs"
@@ -32,7 +32,7 @@ REMBERME = 'remberme'
 LOGIN = 'login'
 CURRENT_USER_ID='user_id'
 CURRENT_USER = "current_user"
-
+FRONT_USER_ID = "front_user_id"
 # flask-mail
 MAIL_SERVER = 'smtp.qq.com'
 MAIL_PROT = 587
@@ -46,5 +46,14 @@ MAIL_DEFAULT_SENDER='995304793@qq.com' # 默认的发件人
 #MAIL_USE_SSL 端口号 467
 # QQ邮箱不支持非加密方式发送邮件
 
+# 富文本编辑器上传七牛云
+import os
 
+UEDITOR_UPLOAD_PATH = os.path.join(os.path.dirname(__file__),'images')
+
+UEDITOR_UPLOAD_TO_QINIU = True
+UEDITOR_QINIU_ACCESS_KEY = "gixRZTC9nnM_ODSEyAmDtFPVBD5sBWJo1dsfszvB"
+UEDITOR_QINIU_SECRET_KEY = "X8TYRWzELi-hfyzl1MeAkEbS9i5DKL_8qI4m_o3l"
+UEDITOR_QINIU_BUCKET_NAME = "pjbbs"
+UEDITOR_QINIU_DOMAIN = "peouv6xac.bkt.clouddn.com"
 

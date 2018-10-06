@@ -7,6 +7,13 @@ from exts import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
 
+class Boarder(db.Model):
+    __tablename__ = 'boarder'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    boardername = db.Column(db.String(99), nullable=False)
+    postnum =db.Column(db.Integer,nullable=False,default=0)
+    create_time = db.Column(db.DateTime, default=datetime.now)
+
 class Permission:
     USER_INFO = 1           #00000001
     BANNER = 2              #00000010

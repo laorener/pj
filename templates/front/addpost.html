@@ -1,0 +1,40 @@
+{% extends 'front/base.html' %}
+{% block title %} 发布帖子{% endblock %}
+{% block header %}
+ <!-- 配置文件 -->
+    <script type="text/javascript" src="{{url_for('static',filename='ueditor/ueditor.config.js')}}"></script>
+    <!-- 编辑器源码文件 -->
+    <script type="text/javascript" src="{{url_for('static',filename='ueditor/ueditor.all.js')}}"></script>
+    <script src="{{ url_for('static',filename='front/js/addpost.js')}}"></script>
+{% endblock %}
+{% block content %}
+    <div class="box" style="width: 80%; margin: 0 auto">
+        <form>
+            <div class="input-group">
+                <span class="input-group-addon">帖子名称</span>
+                <input class="form-control" name="postname" type="text" placeholder="请输入帖子的名字">
+            </div>
+            <div style="padding: 10px"></div>
+            <div class="input-group">
+                <span class="input-group-addon">板块名称</span>
+                <select class="form-control" name="boarderid">
+                      {% for boarder in boards %}
+                            {#  用户看到的是boarder.name,但是上传的时候是boarder.id #}
+                           <option value="{{boarder.id}}">{{boarder.boardname}}</option>
+                      {% endfor %}
+                </select>
+            </div>
+         <div style="padding: 10px"></div>
+        <div style="width: 100%;margin: 0px auto">
+            <!-- 加载编辑器的容器 -->
+              <!-- 加载编辑器的容器 -->
+            <script id="editor" style="height: 450px" type="text/plain" > </script>
+            </div>
+            <div style="padding: 10px"></div>
+            <div style='width:200px;margin:0px auto'>
+                 <button class="btn btn-success btn-block" id="addpost"> 提交 </button>
+            </div>
+             <div style="padding: 10px"></div> <div style="padding: 10px"></div>
+        </form>
+    </div>
+{% endblock %}

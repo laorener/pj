@@ -1,15 +1,19 @@
 {% extends 'cms/base.html' %}
+
 {% block title %}
     轮播图管理
 {% endblock %}
 
 {% block page_title %}
-    欢迎来到{{ self.title() }}
+    欢迎来到{{self.title()}}
 {% endblock %}
 {% block head %}
     <script src="{{url_for('static',filename='cms/js/banner.js') }}"></script>
+    <script src="https://cdn.staticfile.org/Plupload/2.1.1/moxie.js"></script>
+    <script src="https://cdn.staticfile.org/Plupload/2.1.1/plupload.dev.js"></script>
+    <script src="https://cdn.staticfile.org/qiniu-js-sdk/1.0.14-beta/qiniu.js"></script>
 {% endblock %}
-{% block  content %}
+{% block  content%}
     <div style="overflow: hidden">
         <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal" style="float: right">添加轮播图
         </button>
@@ -74,7 +78,7 @@
                                 <input type="text" class="form-control" id='imglink' placeholder="请输入图片的url">
                             </div>
                             <div class="col-sm-2">
-                                <button class='btn-sm btn btn-success'>
+                                <button class='btn-sm btn btn-success' id="btnbtn">
                                     选择图片</button>
                             </div>
                         </div>
@@ -94,7 +98,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button"  id="saveBanner" class="btn btn-primary" >保存</button>
+                    <button type="button"  id="saveBanner" class="btn btn-primary"  from="0">保存</button>
                 </div>
             </div>
         </div>
