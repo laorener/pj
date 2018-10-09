@@ -101,7 +101,7 @@ class AddPostForm(BaseForm):
     boarder_id = IntegerField(InputRequired(message="板块不能为空"))
     content = StringField(InputRequired(message="帖子内容不能为空"))
 
-# pjkj进行
+
 def md5(telephone):
     m = hashlib.md5()
     v = telephone + '123456'

@@ -28,3 +28,21 @@ class Post(db.Model) :
     # 前台用户id使用的short_uuid, 类型和长度，约束必须一直
     user_id = db.Column(db.String(100), db.ForeignKey('front_user.id'), default=shortuuid.uuid)
     user = db.relationship('FrontUser', backref='posts') # orm查询的时候使用
+    readCount = db.Column(db.Integer,default=0)
+
+class Tag(db.Model):
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    post_id = db.Column(db.Integer,db.ForeignKey('common_post.id'))
+    post = db.relationship('Post', backref=db.backref('tag', uselist=False))  # orm查询的时候使
+    status = db.Column(db.Boolean, default=False)
+    create_time = db.Column(db.DateTime, default=datetime.datetime.now)
+
+class Common(db.Model):
+    __tablename__ = "common_common"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    content = db.Column(db.Text, nullable=False)
+    post_id = db.Column(db.Integer,db.ForeignKey('common_post.id'))
+    post = db.relationship('Post',backref='commons')
+    user_id = db.Column(db.String(100), db.ForeignKey('front_user.id'), default=shortuuid.uuid)
+    user = db.relationship('FrontUser', backref='commons')  # orm查询的时候使用
+    create_time = db.Column(db.DateTime, default=datetime.datetime.now)

@@ -20,7 +20,7 @@
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 
             </button>
-            <a class="navbar-brand" href="#">破茧科技首页</a>
+            <a class="navbar-brand" href="/">破茧科技首页</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -30,12 +30,21 @@
                 </div>
                 <button type="submit" class="btn btn-default">查找</button>
             </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/signin/">登录</a></li>
-                <li class="dropdown">
-                    <a href="/signup/">注册</a>
-                </li>
-            </ul>
+            {% if user %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a>{{ user.username}}</a></li>
+                    <li class="dropdown">
+                        <a href="/logout/">注销</a>
+                    </li>
+                </ul>
+            {% else %}
+                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/signin/">登录</a></li>
+                    <li class="dropdown">
+                        <a href="/signup/">注册</a>
+                    </li>
+                </ul>
+            {% endif %}
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>

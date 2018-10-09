@@ -8,6 +8,7 @@ from exts import db,mail
 from flask_wtf import CSRFProtect
 from flask_mail import Message
 
+
 import os
 import string
 import time
@@ -25,6 +26,7 @@ app.register_blueprint(cms_bp)
 app.register_blueprint(front_bp)
 
 # 加载配置文件
+
 app.config.from_object(config)
 CSRFProtect(app=app)
 db.init_app(app)

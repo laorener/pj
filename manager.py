@@ -5,9 +5,9 @@ from flask_migrate import Migrate,MigrateCommand
 from pjjk import app
 from exts import db
 
-from apps.cms.models import User,Role,Permission
-from apps.front.models import  FrontUser
-from apps.common.models import Banner
+from apps.cms.models import *
+from apps.front.models import *
+from apps.common.models import *
 # flask-script的使用
 manage = Manager(app)
 # 要使用flask-migrate必须绑定app和db
@@ -38,6 +38,15 @@ def useraddrole(user_id,role_id):
     r = Role.query.get(role_id)
     u.roles.append(r)
     db.session.commit()
+
+@manage.command
+def addpost():
+    for i in range(100):
+        post = Post(title="title"+str(i),content="content"+str(i),board_id=1,user_id="9frm9wmZRgUtpoB4oPXFRL")
+        db.session.add(post)
+        db.session.commit()
+    print("100个帖子发表完毕")
+
 
 if __name__ == '__main__':
     manage.run()

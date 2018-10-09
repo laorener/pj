@@ -1,0 +1,86 @@
+{% extends 'cms/base.html' %}
+
+{% block title %} 帖子管理 {% endblock %}
+
+{% block page_title %}
+    欢迎来到{{self.title()}}
+{% endblock %}
+{% block head %}
+    <script src="{{url_for('static',filename='cms/js/postmgr.js') }}"></script>
+{% endblock %}
+{% block  content%}
+    <div style="overflow: hidden">
+        <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal" style="float: right">添加帖子
+        </button>
+    </div>
+        <table class="table table-hover scrolltable">
+        <thead style="display:block" class="row">
+        <tr style="text-align: center">
+            <td class="col-md-1">编号</td>
+            <td class="col-md-1">所属板块</td>
+            <td class="col-md-1">帖子的标题</td>
+            <td class="col-md-2">帖子的内容</td>
+            <td class="col-md-1">阅读数量</td>
+            <td class="col-md-2">精华操作</td>
+            <td class="col-md-2">操作</td>
+        </tr>
+        </thead>
+        <tbody style="display:block; max-height:400px;overflow-y: scroll;">
+        {% for post in posts %}
+            <tr style="text-align: center;"  class="row">
+            <td class="col-md-1">{{ post.id }}</td>
+            <td class="col-md-2">{{ post.board.boardname }}</td>
+            <td class="col-md-1"> {{ post.title }}</td>
+            <td class="col-md-2">{{ post.content }}</td>
+                <td class="col-md-2">{{ post.readCount if post.readCount else 0 }}</td>
+                <td class="col-md-2">
+                    {% if post.tag.status %}
+                    <button class="btn btn-warning update-btn" data-tag="canceltag" data-id="{{ post.id}}">取消加精</button>
+                    {% else %}
+                    <button class="btn btn-success update-btn" data-id="{{ post.id}}">加精</button>
+                    {% endif %}
+                </td>
+            <td class="col-md-2">
+                <button class="btn btn-danger delete-btn" >删除</button>
+                <button class="btn btn-warning update-btn"
+                >更新</button>
+            </td>
+        </tr>
+            {% else %}
+                暂无数据
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <input type="hidden" value="" name="id" id="id">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">添加帖子</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="bannerName" style="display: none" class="col-sm-2 control-label">id</label>
+                            <div class="col-sm-10" style="display: none">
+                                <input type="text"  class="form-control" id="id" placeholder="请输入id">
+                            </div>
+                            <label for="bannerName" class="col-sm-2 control-label">版块名称</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="boardName" placeholder="请输入版块名称">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button"  id="saveBanner" class="btn btn-primary"  from="0">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

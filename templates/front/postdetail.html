@@ -1,0 +1,57 @@
+{% extends 'front/base.html' %}
+{% block title  %} 帖子详情  {% endblock %}
+{% block header %}
+    <style>
+        img {
+            width: 100%;
+        }
+    </style>
+ <!-- 配置文件 -->
+    <script type="text/javascript" src="{{url_for('static',filename='ueditor/ueditor.config.js')}}"></script>
+    <!-- 编辑器源码文件 -->
+    <script type="text/javascript" src="{{url_for('static',filename='ueditor/ueditor.all.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='front/js/postdetail.js')}}"></script>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-7" style="padding-left: 70px">
+            <div style="padding-bottom: 10px;text-align: center">
+                <h3>{{ post.title}}</h3>
+                <div>
+                    <span style="margin-right: 40px">作者:{{post.user.username}}</span>
+                    <span style="margin-right: 40px">时间:{{post.create_time}}</span>
+                    <span >评论数:10</span>
+                </div>
+            </div>
+            <div style="height: 1px;background: #e3e3e3"></div>
+            <div style="padding-top: 10px;border: 1px solid #e6e6e6" >
+                {{ post.content|safe}}
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3" style="text-align: center;border:1px solid; #e3e3e3height: 100%;padding-top: 100px">
+            <img style="width: 70px;height: 70px" src="{{url_for("static",filename='front/img/pjkj.png')}}" alt="">
+            <div style="font-size: 30px">{{ post.user.username}}</div>
+        </div>
+    </div>
+    <div>
+        <form>
+            <input type="hidden" name="post_id" id="post_id" value="{{post.id}}">
+            <script id="editor" style="height: 200px" type="text/plain" > </script>
+            <button class='btn btn-success btn-lg' id='submit-common'>发表评论</button>
+        </form>
+    </div>
+    <div>
+        <ul>
+                {% for common in commoms %}
+                      <li>
+                        <div>{{ common.content|safe}}</div>
+                        <div><span style='margin:0px 30px'>{{ common.user.username}}</span>
+                        <span style='margin:0px 30px'>{{ common.create_time}}</span></div>
+                    </li>
+                {% endfor %}
+                        
+
+        </ul>
+    </div>
+{% endblock %}

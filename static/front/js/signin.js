@@ -11,11 +11,12 @@ $(function () {
                 'telephone':telephone,
                 'csrf_token':csrf,
                 'password':password,
+                "rember":$("#remberme").prop("checked")?1:2
             },
             success:function (data) {
                 if (data.code == 200) {
                     xtalert.alertSuccessToast("登录成功");
-                    window.location.href = '/'
+                    window.location = $('meta[name=from]').attr('value')
                 } else {  // 提示出错误
                     xtalert.alertErrorToast(data.msg);
                 }

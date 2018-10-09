@@ -7,16 +7,16 @@ from apps.cms.forms import UserForm,ResetPwdForm,ResetEmailForm,\
         updateboardFrom,deleteboardFrom
 from flask import request,jsonify
 from apps.common.baseResp import *
-from apps.common.models import Banner,Board
-from exts import db,mail
-from flask_mail import Message
+from apps.common.models import *
 from apps.cms.models import *
-from config import REMBERME,LOGIN,CURRENT_USER_ID,CURRENT_USER
-import string
-import random
-from apps.common.memcachedUtil import saveCache,getCache
+from config import REMBERME,LOGIN,CURRENT_USER_ID
 from functools import wraps
 from qiniu import Auth
+from task import setmail
+import string
+import random
+from flask_mail import Message
+from apps.common.memcachedUtil import saveCache,getCache
 
 bp = Blueprint('cms',__name__,url_prefix="/cms")
 
@@ -146,16 +146,16 @@ bp.add_url_rule("/resetemail/",endpoint='resetemail',view_func=ResetEmail.as_vie
 def sendEmailCode():
     fm = ResetEmailSendCode(formdata=request.form)
     if fm.validate():
-        # user = User.query.filter(User.email == fm.email.data).first()
-        # if user:
-        #     return jsonify(respParamErr(msg='邮箱已注册'))
-        # else:  # 发送邮件
-        r = string.ascii_letters+string.digits
-        r = ''.join(random.sample(r,6))
-        saveCache(fm.email.data,r.upper(),30*60)
-        msg = Message("我的邮箱验证码",recipients=[fm.email.data], body="验证码为" + r)
-        mail.send(msg)
-        return jsonify(respSuccess(msg="发送成功,请查看邮箱"))
+        user = User.query.filter(User.email == fm.email.data).first()
+        if user:
+            return jsonify(respParamErr(msg='邮箱已注册'))
+        else:  # 发送邮件
+            r = string.ascii_letters+string.digits
+            r = ''.join(random.sample(r,6))
+            saveCache(fm.email.data,r.upper(),30*60)
+            data = fm.email.data
+            setmail.delay(data,r)
+            return jsonify(respSuccess(msg="发送成功,请查看邮箱"))
     else:
         return jsonify(respParamErr(msg=fm.err))
 
@@ -282,6 +282,44 @@ def deleteboard():
         return jsonify(respSuccess(msg='删除成功'))
     else:
         return jsonify(respParamErr(msg=fm.err))
+
+# 帖子管理页面
+@bp.route("/showpost/")
+@loginDecotor
+@checkPermission(Permission.PLATE)
+def showPost():
+    posts = Post.query.all()
+    context = {
+        'posts':posts
+    }
+    return render_template("cms/postmgr.html",**context)
+
+@bp.route("/addtag/",methods=['post'])
+@loginDecotor
+@checkPermission(Permission.PLATE)
+def addTag():
+    post_id = request.values.get("post_id")
+    post = Post.query.filter(Post.id == post_id).first()
+    if post :
+        tag = Tag(post=post,status=True)
+        db.session.add(tag)
+        db.session.commit()
+        return jsonify(respSuccess("加精完成"))
+    else:
+        return jsonify(respParamErr("请传入正确的post_id"))
+
+@bp.route("/deletetag/",methods=['post'])
+@loginDecotor
+@checkPermission(Permission.PLATE)
+def deleteTag():
+    post_id = request.values.get("post_id")
+    tag = Tag.query.filter(Tag.post_id == post_id).first()
+    if tag :
+        tag.status = False
+        db.session.commit()
+        return jsonify(respSuccess("取消加精成功"))
+    else:
+        return jsonify(respParamErr("请传入正确的post_id"))
 
 @bp.context_processor
 def requestUser():

@@ -61,14 +61,14 @@
             </div>
         </div>
         <div class="col-md-2 " style="">
-            <button class="btn-block btn btn-lg btn-success "><a href="/addpost/">发布帖子</a></button>
+            <a href="/addpost/"><button class="btn-block btn btn-lg btn-success ">发布帖子</button></a>
             <div class="panel panel-default">
                 <div class="panel-heading" style="background: lightblue;text-align:center">
                     <h3 class="panel-title">模块名称</h3>
                 </div>
                 {% for board in boards %}
                     <div class="panel-body" style="text-align: center">
-                        <a href="#">{{ board.boardname }}</a>
+                        <a href="/?boarder_id={{board.id}}">{{ board.boardname }}</a>
                     </div>
                 {% endfor %}
             </div>
@@ -77,32 +77,63 @@
     <div class="post-group">
         <div class="post-header" style="border-bottom: 1px solid #e6e6e6">
             <ul>
-                <li class="post-header-li"><a href="#">最新</a></li>
-                <li class="post-header-li"><a href="#">精华帖子</a></li>
-                <li class="post-header-li"><a href="#">点赞最多</a></li>
-                <li class="post-header-li"><a href="#">评论最多</a></li>
+                <li class="post-header-li"><a href="/">最新</a></li>
+                <li class="post-header-li"><a href="/?jinghua=1">精华帖子</a></li>
+                <li class="post-header-li"><a href="/mostbb/">评论最多</a></li>
+                <li class="post-header-li"><a href="/?readcount=1">阅读量最多</a></li>
             </ul>
         </div>
         <div class="post-content">
             <ul>
-                {% for post in posts %}
+{#                {% for post in page.posts %}#}
+                  {% for post in posts %}
                     <li class="post-li"
                         style="border-bottom: 1px solid #e6e6e6;overflow: hidden;padding-top: 20px;padding-bottom: 10px">
+                        <a href="/showpostdetail/?post_id={{ post.id}}">
                         <div style="float:left;">
                             <img style="width: 40px;height: 40px"
                                  src="{{ url_for('static',filename='front/img/pjkj.png') }}">
                         </div>
                         <div style="float:left;padding-left: 20px">
-                            <div style="font-size: 18px;font-weight: 700">{{ post.title }}</div>
+                            <div style="font-size: 18px;font-weight: 700">
+                                {% if post.tag.status %}
+                                     <span style="color: red"> {{ post.title }} </span>
+                                    {% else %}
+                                     <span > {{ post.title }} </span>
+                                {% endif %}
+                            </div>
                             <div><span style="padding-right: 20px">作者:{{ post.user.username}}</span>
                                 <span style="padding-right: 20px;padding-left: 20px">评论:10</span>
                                 <span style="padding-right: 20px;padding-left: 20px">时间:{{ post.create_time|convert}}</span>
-                                <span style="padding-right: 20px;padding-left: 20px">阅读:10</span>
+                                <span style="padding-right: 20px;padding-left: 20px">阅读量:{{ post.readCount if post.readCount else 0}}</span>
                             </div>
                         </div>
+                     </a>
                     </li>
                 {% endfor %}
             </ul>
+            <div style="text-align: center">{{ pagination.links }}</div>
+{#        <nav aria-label="Page navigation">#}
+{#          <ul class="pagination">#}
+{#            <li>#}
+{#              <a href="/?current_page={{page.currentpage - 1}}" aria-label="Previous">#}
+{#                <span aria-hidden="true">&laquo;</span>#}
+{#              </a>#}
+{#            </li>#}
+{#              {% for index in range(page.page) %}#}
+{#                  {% if index == page.currentpage%}#}
+{#                       <li class="active"><a href="/?current_page={{index}}">{{ index + 1}}</a></li>#}
+{#                   {% else %}#}
+{#                      <li><a href="/?current_page={{index}}">{{ index + 1}}</a></li>#}
+{#                  {% endif %}#}
+{#              {% endfor %}#}
+{#            <li>#}
+{#              <a href="/?current_page={{page.currentpage + 1}}" aria-label="Next">#}
+{#                <span aria-hidden="true">&raquo;</span>#}
+{#              </a>#}
+{#            </li>#}
+{#          </ul>#}
+{#        </nav>#}
         </div>
     </div>
 {% endblock %}
